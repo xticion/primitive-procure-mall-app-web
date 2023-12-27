@@ -11,3 +11,31 @@ uni.addInterceptor('request',{
         // 判断是否登录，如果已登录，请求头中携带token
     }
 })
+
+// 请求函数封装
+type Data<T> = {
+    code: number;
+    message: string;
+    data:T;
+}
+
+export const http = <T>(options:UniApp.RequestOptions) =>{
+    return new Promise<Data<T>>((resolve,reject)=>{
+        uni.request({
+            ...options,
+            // 响应成功
+            success:(res)=>{
+               resolve(res.data as Data<T>)
+            },
+            // 响应失败
+            fail:(err)=>{
+                // 错误提示
+                uni.showToast({
+                    icon:"error",
+                    title:err.errMsg
+                })
+                reject(err)
+            }
+        })
+    })
+}
