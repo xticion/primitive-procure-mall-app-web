@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:8080'
+const baseUrl = 'http://localhost:8085'
 
 // 拦截request请求
 uni.addInterceptor('request', {

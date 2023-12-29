@@ -1,16 +1,27 @@
-<template>
-  <view class="content">
-    <image class="logo" src="/static/logo.png" />
-    <view class="text-area">
-      <text class="title">{{ title }}</text>
-    </view>
-  </view>
-</template>
-
 <script setup lang="ts">
-import { ref } from 'vue'
-const title = ref('Hello')
+import { ref } from 'vue';
+import {indexContentAPI} from '@/services/index';
+import type {IndexContent} from '@/types/index';
+import { onLoad } from '@dcloudio/uni-app';
+import PubSwiper from './components/PubSwiper.vue'
+
+const indexContent = ref<IndexContent>();
+
+const getIndexContentData = async()=>{
+  let res = await indexContentAPI();
+  indexContent.value = res.data;
+}
+
+onLoad(()=>{
+  console.log("index onload begin")
+  // 页面加载时，获取轮播图数据
+  getIndexContentData();
+})
+
 </script>
+<template>
+  <PubSwiper :list="indexContent.advertiseList"></PubSwiper>
+</template>
 
 <style>
 .content {
